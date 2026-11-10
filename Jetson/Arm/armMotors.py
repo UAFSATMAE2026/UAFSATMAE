@@ -4,7 +4,7 @@ import pygame as pg
 import serial as ser
 
 pg.init() # initializing pygame so that events exist or somtin - jerick
-serialCon = ser.Serial('/dev/ttyACM0', 115200)
+serialCon = ser.Serial('/dev/ttyACM0', 9600)
 
 pg.joystick.init()
 joysticks = [pg.joystick.Joystick(x) for x in range(pg.joystick.get_count())]
@@ -15,8 +15,8 @@ x_joystick = 0.0
 y_joystick = 0.0
 
 def main():
-    arm = m2Arm(port = "/dev/ttyUSB0")
-    arm.move_init()
+    # arm = m2Arm(port = "/dev/ttyUSB0")
+    # arm.move_init()
 
     alignment = 0.0
     latch = False
@@ -34,7 +34,7 @@ def main():
             pass
         pg.event.pump()
         x_joystick = round((pg.joystick.Joystick(0).get_axis(0)))  
-        y_joystick = round((pg.joystick.Joystick(0).get_axis(1)))
+        y_joystick = round((pg.joystick.Joystick(0).get_axis(1))) * -1
 
         if(pg.joystick.Joystick(0).get_button(13)): # button 13 is the start button on the xbox controller
             latch = not latch
@@ -45,7 +45,7 @@ def main():
                 alignment = 0
 
         serialCon.write(f'{x_joystick* 100} {y_joystick* 100} {alignment*1}'.encode("utf-8"))
-        print(f"{x_joystick* 100} {y_joystick* 100} {x} {y} {z} {alignment} {angle_grip}")
+        print(f"x: {x_joystick* 100} y: {y_joystick* 100} xarm: {x} yarm: {y} zarm: {z} alignment: {alignment} angle_grip: {angle_grip}")
 
         x1_joystick = round((pg.joystick.Joystick(0).get_axis(2)) ,1)*-1
         y1_joystick = round((pg.joystick.Joystick(0).get_axis(3)) ,1)*-1
@@ -65,8 +65,9 @@ def main():
         if(y1_joystick > 0.25 or y1_joystick < -0.25):
             y += y1_joystick
 
-        arm.gripper_angle_ctrl(angle_grip,10,3)
-        arm.move_to_xyz(y,x,z)
+        # arm.gripper_angle_ctrl(angle_grip,10,3)
+        # arm.move_to_xyz(y,x,z)
+        print('wahhhhh')
         clock.tick(60)
 if __name__ == "__main__":
     main()

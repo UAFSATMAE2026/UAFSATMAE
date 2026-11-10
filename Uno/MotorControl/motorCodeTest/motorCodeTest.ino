@@ -1,22 +1,23 @@
 #include "CytronMotorDriver.h"
 
-const long heartbeat = 3000;
+const long heartbeat = 6;
 unsigned long premillis = 0;
 
-// Pins were pre-determined on the Figma already so I just copied those pins.
-CytronMD motor1(PWM_DIR, 4, 7); // Motor 1. PWM pin is 8, DIR pin is 5
-CytronMD motor2(PWM_DIR, 6, 3);   // Motor 2. PWM pin is 9, DIR pin is 4
-CytronMD motor3(PWM_DIR, 11, 12);   // Motor 3. PWM pin is 10, DIR pin is 3
-CytronMD motor4(PWM_DIR, 9, 13);   // Motor 4. PWM pin is 11, DIR pin is 2
+CytronMD motor1(PWM_DIR, 4, 7); // Motor 1. PWM pin is 8, DIR pin is 5 Front Left. Negative to go forward
+CytronMD motor2(PWM_DIR, 6, 3);   // Motor 2. PWM pin is 9, DIR pin is 4 Back Right negative to go forward
+CytronMD motor3(PWM_DIR, 9, 13);   // Motor 3. PWM pin is 10, DIR pin is 3 Front Right positive to forward
+CytronMD motor4(PWM_DIR, 11, 12);   // Motor 4. PWM pin is 11, DIR pin is 2 Back Left Positive to forward
+
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
+  unsigned long currentMillis = millis();
   // My big ol encompassing if statement that checks to see if the serial connection has any data coming through.
-  if(Serial.available() > 0){
-    
+  if(Serial.available() > 0 && currentMillis - premillis >= heartbeat){
+    premillis = currentMillis;
     int x = Serial.parseInt();
     int y = Serial.parseInt();
     int align = Serial.parseInt();
@@ -25,25 +26,25 @@ void loop() {
       motorSpeed(0, 0, 0, 0);
     }
     else if( (-45 < x && x < 45) && (y > 45) ){ // straight forward
-      motorSpeed(128, 128, 128, 128);
+      motorSpeed(-128, -128, 128, 128);
     }
     else if( (-45 < x && x < 45) && (y < -45) ){ // straight backwards
-      motorSpeed(-128, -128, -128, -128);
+      motorSpeed(128, 128, -128, -128);
     }
     else if(align == 1){
       if( (x > 45) && (-45 < y && y < 45) ){ // sideways right
-        motorSpeed(128, -128, -128, 128);
+        motorSpeed(-128, -128, 128, 128);
       }
       else if( (x < -45) && (-45 < y && y < 45) ){ // sideways left
-        motorSpeed(-128, 128, 128, -128);
+        motorSpeed(128, 128, -128, -128);
       }
     }
     else if(align == 0){
       if( (x > 45) && (-45 < y && y < 45) ){ // spin right
-        motorSpeed(128, -128, 128, -128);
+        motorSpeed(-128, 128, 128, -128);
       }
       else if( (x < -45) && (-45 < y && y < 45) ){ // spin left
-        motorSpeed(-128, 128, -128, 128);
+        motorSpeed(128, -128, -128, 128);
       }
     }
 //    if(){ // diagonal right
