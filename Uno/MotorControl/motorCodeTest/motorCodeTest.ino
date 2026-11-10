@@ -26,10 +26,10 @@ void loop() {
       motorSpeed(0, 0, 0, 0);
     }
     else if( (-45 < x && x < 45) && (y > 45) ){ // straight forward
-      motorSpeed(-128, -128, 128, 128);
+      motorSpeed(128, 128, 128, 128);
     }
     else if( (-45 < x && x < 45) && (y < -45) ){ // straight backwards
-      motorSpeed(128, 128, -128, -128);
+      motorSpeed(-128, -128, -128, -128);
     }
     else if(align == 1){
       if( (x > 45) && (-45 < y && y < 45) ){ // sideways right
@@ -41,10 +41,10 @@ void loop() {
     }
     else if(align == 0){
       if( (x > 45) && (-45 < y && y < 45) ){ // spin right
-        motorSpeed(-128, 128, 128, -128);
+        motorSpeed(128, -128, 128, -128);
       }
       else if( (x < -45) && (-45 < y && y < 45) ){ // spin left
-        motorSpeed(128, -128, -128, 128);
+        motorSpeed(-128, 128, -128, 128);
       }
     }
 //    if(){ // diagonal right

@@ -18,7 +18,7 @@ def main():
     # arm = m2Arm(port = "/dev/ttyUSB0")
     # arm.move_init()
 
-    alignment = 0.0
+    alignment = 0
     latch = False
     
     clock = pg.time.Clock()
@@ -34,9 +34,9 @@ def main():
             pass
         pg.event.pump()
         x_joystick = round((pg.joystick.Joystick(0).get_axis(0)))  
-        y_joystick = round((pg.joystick.Joystick(0).get_axis(1))) * -1
+        y_joystick = round((pg.joystick.Joystick(0).get_axis(1)))
 
-        if(pg.joystick.Joystick(0).get_button(13)): # button 13 is the start button on the xbox controller
+        if(pg.joystick.Joystick(0).get_button(7)): # button 7 is the start button on the xbox controller
             latch = not latch
 
             if latch:
@@ -67,7 +67,6 @@ def main():
 
         # arm.gripper_angle_ctrl(angle_grip,10,3)
         # arm.move_to_xyz(y,x,z)
-        print('wahhhhh')
         clock.tick(60)
 if __name__ == "__main__":
     main()
