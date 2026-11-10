@@ -52,12 +52,12 @@ def main():
 
         if(pg.joystick.Joystick(0).get_hat(0)==(0,1)):  #control z axis movement
             z = z + .25
-        if(pg.joystick.Joystick(0).get_hat(0)==(0,-1)):
+        elif(pg.joystick.Joystick(0).get_hat(0)==(0,-1)):
             z = z - .25
 
         if(pg.joystick.Joystick(0).get_hat(0)==(1,0)):  #control gripper angle
             angle_grip = angle_grip + .25
-        if(pg.joystick.Joystick(0).get_hat(0)==(-1,0)):
+        elif(pg.joystick.Joystick(0).get_hat(0)==(-1,0)):
             angle_grip = angle_grip - .25
 
         if(x1_joystick > 0.25 or x1_joystick < -0.25):
