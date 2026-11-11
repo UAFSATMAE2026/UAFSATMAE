@@ -57,11 +57,11 @@ def main():
             logger.info(f"Connection successful! Connect with rate {SERIAL_RATE}")
             while True:
                     logger.info("Clearing pygame event queue...")
-                    pygame.event.clear() # Emptying event queue to continue reading
+                    pygame.event.pump() # Emptying event queue to continue reading
 
                     # Getting values of the L and R joysticks
-                    leftStickX = round(controller.get_axis(0), 2) * 100
-                    leftStickY = round(controller.get_axis(1), 2) * 100
+                    leftStickX = round(controller.get_axis(0)) * 100
+                    leftStickY = round(controller.get_axis(1)) * -100
 
                     rightStickX = round(controller.get_axis(2), 2) * -1
                     rightStickY = round(controller.get_axis(3), 2) * -1
@@ -72,7 +72,7 @@ def main():
                     if controller.get_hat(0) == (0, 1): # Control Arm Z-Axis Movement
                         zArmLoc += 0.25
                     elif controller.get_hat(0) == (0, -1):
-                        zArmlock -= 0.25
+                        zArmloc -= 0.25
                     
                     if controller.get_hat(0) == (1, 0): # Control Gripper
                         gripperAngle += 0.25
@@ -86,13 +86,13 @@ def main():
                         yArmLoc += rightStickY
 
                     # Sending off data to the arm and Arduino
-                    ser.write(f"{leftStickX} {leftStickY} {int(alignment)}".encode("utf-8"))
-                    arm.move_to_xyz(yArmLoc, xArmLoc, zArmLoc)
-                    arm.gripper_angle_ctrl(gripperAngle, 10, 3)
+                    ser.write(f"<{leftStickX},{leftStickY}>".encode("utf-8"))
+                    # arm.move_to_xyz(yArmLoc, xArmLoc, zArmLoc)
+                    # arm.gripper_angle_ctrl(gripperAngle, 10, 3)
                     # No point in logging this data as it will just flood the logs, so I'm just gonna have it print.
                     print(f"""LSX: {leftStickX} LSY: {leftStickY}
                         xArmLoc: {xArmLoc} yArmLoc: {yArmLoc} zarm: {zArmLoc}
-                        alignment: {int(alignment)} Gripper Angle: {angle_grip}""")
+                        alignment: {int(alignment)} Gripper Angle: {gripperAngle}""")
                     
                     clock.tick(60)
     except serial.SerialException as e:

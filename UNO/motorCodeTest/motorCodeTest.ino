@@ -16,37 +16,42 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
   // My big ol encompassing if statement that checks to see if the serial connection has any data coming through.
-  if(Serial.available() > 0 && currentMillis - premillis >= heartbeat){
-    premillis = currentMillis;
-    int x = Serial.parseInt();
-    int y = Serial.parseInt();
-    int align = Serial.parseInt();
+  if(Serial.available() > 0){
+      if(Serial.read() == '<'){
+        int x = Serial.parseInt();
+        int y = Serial.parseInt(); 
+        int align = 1;
+        if(Serial.read() == '>'){
+          if( ( -20 < x && x < 20) && ( -20 < y && y < 20) ){ // deadzone stop
+            motorSpeed(0, 0, 0, 0);
+          }
+          else if( (-45 < x && x < 45) && (y > 45) ){ // straight forward
+            motorSpeed(-128, -128, 128, 128);
+          }
+          else if( (-45 < x && x < 45) && (y < -45) ){ // straight backwards
+            motorSpeed(128, 128, -128, -128);
+          }
+          else if(align == 1){
+            if( (x > 45) && (-45 < y && y < 45) ){ // sideways right
+              motorSpeed(-128, 128, -128, 128);
+            }
+            else if( (x < -45) && (-45 < y && y < 45) ){ // sideways left
+              motorSpeed(128, -128, 128, -128);
+            }
+          }
+          else if(align == 0){
+            if( (x > 45) && (-45 < y && y < 45) ){ // spin right
+              motorSpeed(128, -128, 128, -128);
+            }
+            else if( (x < -45) && (-45 < y && y < 45) ){ // spin left
+              motorSpeed(-128, 128, -128, 128);
+            }
+          }
+        }
+      }
+    }
 
-    if( ( -20 < x && x < 20) && ( -20 < y && y < 20) ){ // deadzone stop
-      motorSpeed(0, 0, 0, 0);
-    }
-    else if( (-45 < x && x < 45) && (y > 45) ){ // straight forward
-      motorSpeed(128, 128, 128, 128);
-    }
-    else if( (-45 < x && x < 45) && (y < -45) ){ // straight backwards
-      motorSpeed(-128, -128, -128, -128);
-    }
-    else if(align == 1){
-      if( (x > 45) && (-45 < y && y < 45) ){ // sideways right
-        motorSpeed(-128, -128, 128, 128);
-      }
-      else if( (x < -45) && (-45 < y && y < 45) ){ // sideways left
-        motorSpeed(128, 128, -128, -128);
-      }
-    }
-    else if(align == 0){
-      if( (x > 45) && (-45 < y && y < 45) ){ // spin right
-        motorSpeed(128, -128, 128, -128);
-      }
-      else if( (x < -45) && (-45 < y && y < 45) ){ // spin left
-        motorSpeed(-128, 128, -128, 128);
-      }
-    }
+    
 //    if(){ // diagonal right
 //      motorSpeed(128, 0, 0, 128);
 //    }
@@ -74,7 +79,6 @@ void loop() {
 //    if(){ // stop
 //      motorSpeed(0, 0, 0, 0);
 //    }
-  }
 }
 void motorSpeed(int motorSpeed1, int motorSpeed2, int motorSpeed3, int motorSpeed4){
   motor1.setSpeed(motorSpeed1);
