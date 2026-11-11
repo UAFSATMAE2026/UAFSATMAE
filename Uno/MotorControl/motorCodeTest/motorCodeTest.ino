@@ -1,6 +1,6 @@
 #include "CytronMotorDriver.h"
 
-const long heartbeat = 6;
+const long heartbeat = 16;
 unsigned long premillis = 0;
 
 CytronMD motor1(PWM_DIR, 4, 7); // Motor 1. PWM pin is 8, DIR pin is 5 Front Left. Negative to go forward
@@ -10,7 +10,7 @@ CytronMD motor4(PWM_DIR, 11, 12);   // Motor 4. PWM pin is 11, DIR pin is 2 Back
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200); // reading bits at 115200 times a second
 }
 
 void loop() {
