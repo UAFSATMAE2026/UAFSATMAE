@@ -10,4 +10,4 @@ The Tetson directory stores all the code for the Jetson Orin Nano (a compact, si
 The UNO directory stores all the microcontroller code for the Arduino UNO microcontroller on the bot.
 
 ## Current Team Members
-Jerick (@jgf-uafs or @lodi429)
+Jerick ([@jgf-uafs](https://www.github.com/jgf-uafs) or [@lodi429](https://www.github.com/lodi429))
