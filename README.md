@@ -1,13 +1,13 @@
 # ATMAE 2026-2027
 ## Overview
-This is the official github for the UAFS atmae robotic competition.
-Explanations of some of the systems is on figma which will have better documentation for design.
+This is the official GitHub repository for the UAFS ATMAE 2026 robotic competition.
+Explanations of the code is in most of the comments. More detailed hardware specific documentation is in the OneDrive.
 
 ## Jetson
-The jetson directory stores all the code for the jetson orin nano ( Single board Computer ) on the bot.
+The Tetson directory stores all the code for the Jetson Orin Nano (a compact, single board computer) on the bot.
 
-## Uno
-The uno directory stores all the microcontroller code for the arduino uno microcontroller on the bot.
+## UNO
+The UNO directory stores all the microcontroller code for the Arduino UNO microcontroller on the bot.
 
-
-## TeamMembers
+## Current Team Members
+Jerick (@jgf-uafs or @lodi429)

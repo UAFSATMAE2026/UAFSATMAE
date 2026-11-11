@@ -98,7 +98,7 @@ def main():
     except serial.SerialException as e:
         logger.error(f"An exception has occurred with the serial! {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"An unknown exception has occurred! {e}, exc_info=True")
+        logger.error(f"An unknown exception has occurred! {e}", exc_info=True)
 
 
 if __name__ == "__main__":
