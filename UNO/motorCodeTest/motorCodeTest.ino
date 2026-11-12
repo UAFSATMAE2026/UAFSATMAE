@@ -20,8 +20,7 @@ void loop() {
     if(Serial.read() == '<'){
       int x = Serial.parseInt();
       int y = Serial.parseInt(); 
-      Serial.read();
-      char align = Serial.read();
+      int align = 0;
       if(Serial.read() == '>'){
         if( ( -20 < x && x < 20) && ( -20 < y && y < 20) ){ // deadzone stop
           motorSpeed(0, 0, 0, 0);
@@ -32,7 +31,7 @@ void loop() {
         else if( (-45 < x && x < 45) && (y < -45) ){ // straight backwards
           motorSpeed(-128, -128, -128, -128);
         }
-        else if(align == '1'){
+        else if(align == 1){
           if( (x > 45) && (-45 < y && y < 45) ){ // sideways right
             motorSpeed(128, -128, -128, 128);
           }
@@ -40,7 +39,7 @@ void loop() {
             motorSpeed(-128, 128, 128, -128);
           }
         }
-        else if(align == '0'){
+        else if(align == 0){
           if( (x > 45) && (-45 < y && y < 45) ){ // spin right
             motorSpeed(128, -128, 128, -128);
           }

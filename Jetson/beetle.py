@@ -72,12 +72,12 @@ def main():
                     if controller.get_hat(0) == (0, 1): # Control Arm Z-Axis Movement
                         zArmLoc += 0.25
                     elif controller.get_hat(0) == (0, -1):
-                        zArmloc -= 0.25
+                        zArmLoc -= 0.25
                     
                     if controller.get_hat(0) == (1, 0): # Control Gripper
-                        gripperAngle += 0.25
+                        gripperAngle += 0.5
                     elif controller.get_hat(0) == (-1, 0):
-                        gripperAngle -= 0.25
+                        gripperAngle -= 0.5
                     
                     # Utilizing my Discrete Math knowledge to check if the right joystick is in the deadzone or not
                     if not (rightStickX < 0.25 and rightStickX > -0.25):
@@ -86,7 +86,7 @@ def main():
                         yArmLoc += rightStickY
 
                     # Sending off data to the arm and Arduino
-                    ser.write(f"<{leftStickX},{leftStickY},{int(alignment)}>".encode("utf-8"))
+                    ser.write(f"<{leftStickX},{leftStickY}>".encode("utf-8"))
                     arm.move_to_xyz(yArmLoc, xArmLoc, zArmLoc)
                     arm.gripper_angle_ctrl(gripperAngle, 10, 3)
                     # No point in logging this data as it will just flood the logs, so I'm just gonna have it print.

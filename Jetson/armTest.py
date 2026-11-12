@@ -1,14 +1,20 @@
 from roarm_ik import m2Arm
+import pygame
+import serial
+
+
+pygame.init() # Initializes pygame, our module we use for recording controller input
+pygame.joystick.init() # Initializes the controller reading portion of pygame
 
 # Initializing our arm 
 try:
-    arm = m2Arm() # defaults to /dev/ttyUSB0
+    arm = m2Arm("/dev/ttyUSB0") # defaults to /dev/ttyUSB0
     arm.move_init()
 except serial.SerialException as e: # Setting arm to None if no arm is connected.
     arm = None
 
 if pygame.joystick.get_count() == 0:
-    logger.info("Waiting for controller to connect...")
+    print("Waiting for controller to connect...")
     while pygame.joystick.get_count() == 0: pass
 controller = pygame.joystick.Joystick(0) # sets the first controller to the controller variable. we will only ever connect 1 controller to the jetson.
 
@@ -23,13 +29,15 @@ gripperAngle = 10.0
 
 
 while True:
+    pygame.event.pump() # Emptying event queue to continue reading
+
     rightStickX = round(controller.get_axis(2), 2) * -1
     rightStickY = round(controller.get_axis(3), 2) * -1
     
     if controller.get_hat(0) == (0, 1): # Control Arm Z-Axis Movement
         zArmLoc += 0.25
     elif controller.get_hat(0) == (0, -1):
-        zArmloc -= 0.25
+        zArmLoc -= 0.25
     
     if controller.get_hat(0) == (1, 0): # Control Gripper
         gripperAngle += 0.25
@@ -43,3 +51,4 @@ while True:
 
     arm.move_to_xyz(yArmLoc, xArmLoc, zArmLoc)
     arm.gripper_angle_ctrl(gripperAngle, 10, 3)
+    print(f"X: {xArmLoc}, Y: {yArmLoc}, Z: {zArmLoc}, Gripper Angle: {gripperAngle}")
