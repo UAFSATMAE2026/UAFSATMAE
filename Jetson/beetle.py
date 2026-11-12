@@ -86,9 +86,9 @@ def main():
                         yArmLoc += rightStickY
 
                     # Sending off data to the arm and Arduino
-                    ser.write(f"<{leftStickX},{leftStickY}>".encode("utf-8"))
-                    # arm.move_to_xyz(yArmLoc, xArmLoc, zArmLoc)
-                    # arm.gripper_angle_ctrl(gripperAngle, 10, 3)
+                    ser.write(f"<{leftStickX},{leftStickY},{int(alignment)}>".encode("utf-8"))
+                    arm.move_to_xyz(yArmLoc, xArmLoc, zArmLoc)
+                    arm.gripper_angle_ctrl(gripperAngle, 10, 3)
                     # No point in logging this data as it will just flood the logs, so I'm just gonna have it print.
                     print(f"""LSX: {leftStickX} LSY: {leftStickY}
                         xArmLoc: {xArmLoc} yArmLoc: {yArmLoc} zarm: {zArmLoc}
